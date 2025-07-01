@@ -3,6 +3,7 @@ package com.sky.handler;
 import com.sky.constant.MessageConstant;
 import com.sky.exception.BaseException;
 import com.sky.result.Result;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.bridge.Message;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,5 +41,6 @@ public class GlobalExceptionHandler {
             return Result.error(MessageConstant.UNKNOWN_ERROR);
         }
     }
+
 
 }
