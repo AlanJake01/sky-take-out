@@ -55,10 +55,10 @@ public class CategoryServiceImpl implements CategoryService {
 
         //设置其他默认值
         category.setStatus(StatusConstant.DISABLE); // 默认禁用
-        category.setCreateTime(LocalDateTime.now());
+        /*category.setCreateTime(LocalDateTime.now());
         category.setUpdateTime(LocalDateTime.now());
         category.setCreateUser(BaseContext.getCurrentId());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        category.setUpdateUser(BaseContext.getCurrentId());*/
 
         categoryMapper.insert(category);
     }
@@ -95,8 +95,8 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = new Category();
         BeanUtils.copyProperties(categoryDTO,category);
 
-        category.setUpdateTime(LocalDateTime.now());
-        category.setUpdateUser(BaseContext.getCurrentId());
+        /*category.setUpdateTime(LocalDateTime.now());
+        category.setUpdateUser(BaseContext.getCurrentId());*/
         categoryMapper.update(category);
     }
 
