@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * ClassName:SetMealController
  * Description:
@@ -42,5 +44,13 @@ public class SetMealController {
         log.info("分页查询套餐：{}", setmealPageQueryDTO);
         PageResult pageResult = setMealService.pageQuery(setmealPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @DeleteMapping
+    @ApiOperation(value = "删除套餐")
+    public Result delete(@RequestParam List<Long> ids){
+        log.info("删除套餐：{}", ids);
+        setMealService.deleteBatch(ids);
+        return Result.success();
     }
 }
