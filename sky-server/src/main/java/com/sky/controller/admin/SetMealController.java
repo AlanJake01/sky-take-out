@@ -3,9 +3,12 @@ package com.sky.controller.admin;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.SetMealService;
+import com.sky.vo.SetmealVO;
+import com.wechat.pay.contrib.apache.httpclient.util.RsaCryptoUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -53,4 +56,22 @@ public class SetMealController {
         setMealService.deleteBatch(ids);
         return Result.success();
     }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "根据ID查询套餐")
+    public Result<SetmealVO> getById(@PathVariable Long id){
+        log.info("根据ID查询套餐：{}", id);
+        SetmealVO setmealVO = setMealService.getByIdWithDish(id);
+        return Result.success(setmealVO);
+    }
+
+    @PutMapping
+    @ApiOperation(value = "修改套餐")
+    public Result update(@RequestBody SetmealDTO setMealDTO){
+        log.info("修改套餐：{}", setMealDTO);
+        setMealService.update(setMealDTO);
+        return Result.success();
+    }
+
+
 }
