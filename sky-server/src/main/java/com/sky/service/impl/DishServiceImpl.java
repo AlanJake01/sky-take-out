@@ -8,6 +8,7 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
@@ -20,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * ClassName:DishServiceImpl
@@ -131,5 +134,32 @@ public class DishServiceImpl implements DishService {
             }
         }
         dishFlavorMapper.insertBatch(flavors);
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //更新菜品信息
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        dishMapper.update(dish);
+        //如果是停售操作则包含该菜品的套餐也要停售
+        if(status == StatusConstant.DISABLE){
+            List<Long> dishIds = new ArrayList();
+            dishIds.add(id);
+            List<Long> setmealIds = setMealDishMapper.getSetmealByDishIds(dishIds);
+            if(setmealIds != null && setmealIds.size() > 0){
+                //批量更新套餐状态为停售
+                for (Long setmealId : setmealIds) {
+                    Setmeal setMeal = Setmeal.builder()
+                            //todo 待项目完结再调试看看这里是否需要更新套餐id
+                            .id(setmealId)
+                            .status(StatusConstant.DISABLE)
+                            .build();
+                    setMealDishMapper.update(setMeal);
+                }
+            }
+        }
     }
 }

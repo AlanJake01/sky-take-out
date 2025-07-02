@@ -33,5 +33,7 @@ public interface DishService {
 
     void updateWithFlavor(DishDTO dishDTO);
 
+    void startOrStop(Integer status, Long id);
+
     // 其他菜品相关方法可以在这里定义，例如更新、删除、查询等
 }
