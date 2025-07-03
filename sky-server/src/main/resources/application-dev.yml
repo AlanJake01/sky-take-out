@@ -11,3 +11,9 @@ sky:
     access-key-id: LTAI5tKdCoDEqhA62fCZuZjj
     access-key-secret: Ss2Yc7HzSBNDPFCbjWtlFLeips6ggE
     endpoint: oss-cn-hangzhou.aliyuncs.com
+  redis:
+    host: localhost
+    port: 6380
+#    password:
+    #设置使用的数据库，默认为0号数据库，一共有0到15号数据库可供选择
+    database: 1
