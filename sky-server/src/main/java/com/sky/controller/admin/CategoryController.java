@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
@@ -57,9 +58,9 @@ public class CategoryController {
 
     @ApiOperation(value = "根据类型查询分类")
     @GetMapping("/list")
-    public Result<List<CategoryDTO>> listByType(Integer type) {
+    public Result<List<Category>> listByType(Integer type) {
         log.info("根据类型查询分类：{}", type);
-        List<CategoryDTO> categoryList = categoryService.list(type);
+        List<Category> categoryList = categoryService.list(type);
         return Result.success(categoryList);
     }
 

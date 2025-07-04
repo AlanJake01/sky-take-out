@@ -2,8 +2,8 @@ package com.sky.service;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public interface CategoryService {
 
     PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
-    List<CategoryDTO> list(Integer type);
+    List<Category> list(Integer type);
 
     void startOrStop(Integer status, Long id);
 

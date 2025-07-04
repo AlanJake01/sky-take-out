@@ -27,7 +27,7 @@
         </where>
         order by sort asc,create_time desc
     </select>
-    <select id="list" resultType="com.sky.dto.CategoryDTO">
+    <select id="list" resultType="com.sky.entity.Category">
         select * from category
         where status = 1
         <if test="type != null">
