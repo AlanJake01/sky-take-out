@@ -41,4 +41,6 @@ public interface OrderMapper {
     List<Orders> getByStatusAndOrderTimeLT(Integer pendingPayment, LocalDateTime time);
 
     Double sumByMap(Map map);
+
+    Integer countByMap(Map map);
 }

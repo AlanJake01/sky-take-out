@@ -4,6 +4,7 @@ import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import lombok.extern.slf4j.Slf4j;
@@ -90,5 +91,51 @@ public class ReportServiceImpl implements ReportService {
                 .newUserList(StringUtils.join(newUserList,","))
                 .totalUserList(StringUtils.join(totalUserList,","))
                 .build();
+    }
+
+    @Override
+    public OrderReportVO getOrderStatistics(LocalDate begin, LocalDate end) {
+        List<LocalDate> dateList = new ArrayList<>();
+        dateList.add(begin);
+        while(!begin.equals(end)){
+            begin = begin.plusDays(1);
+            dateList.add(begin);
+        }
+
+        List<Integer> totalOrderList = new ArrayList<>();
+        List<Integer> validOrderList = new ArrayList<>();
+        for (LocalDate localDate : dateList) {
+            LocalDateTime begintime = LocalDateTime.of(localDate, LocalTime.MIN);
+            LocalDateTime endtime = LocalDateTime.of(localDate, LocalTime.MAX);
+            Integer totalOrder = getOrderCont(begintime, endtime, null);
+            Integer validOrder = getOrderCont(begintime, endtime, Orders.COMPLETED);
+
+            totalOrderList.add(totalOrder);
+            validOrderList.add(validOrder);
+        }
+
+        Integer totalOrderCount = totalOrderList.stream().reduce(Integer::sum).get();
+        Integer validOrderCount = validOrderList.stream().reduce(Integer::sum).get();
+
+        Double orderCompletionRate = 0.0;
+        if(totalOrderCount != 0){
+            orderCompletionRate = validOrderCount.doubleValue() / totalOrderCount;
+        }
+        return OrderReportVO.builder()
+                .dateList(StringUtils.join(dateList,","))
+                .orderCountList(StringUtils.join(totalOrderList,","))
+                .validOrderCountList(StringUtils.join(validOrderList,","))
+                .totalOrderCount(totalOrderCount)
+                .validOrderCount(validOrderCount)
+                .orderCompletionRate(orderCompletionRate)
+                .build();
+    }
+
+    private Integer getOrderCont(LocalDateTime begin,LocalDateTime end,Integer status){
+        Map map = new HashMap();
+        map.put("begin",begin);
+        map.put("end",end);
+        map.put("status",status);
+        return orderMapper.countByMap(map);
     }
 }
